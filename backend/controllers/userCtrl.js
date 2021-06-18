@@ -2,12 +2,9 @@
 const bcrypt = require('bcrypt');
 const asyncLib = require('async');
 const jwtCtrl = require('../middleware/auth');
+const verifInputUsers = require('../utils/verifInputUsers');
 const models = require('../models');
 require('dotenv').config({ path: './config/.env' });
-
-//  Instantiate regex for email ans password
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!#@$?/%µ²*,&~èçà+_¤-])[a-zA-Z0-9!#@$?/%µ²*,&~èçà+_¤-]{8,}$/;
 
 //  Routes
 module.exports = {
@@ -23,17 +20,15 @@ module.exports = {
         if (email == null || pseudo == null || password == null) {
             return res.status(400).json({ 'error': 'a field is not filled!' });
         }
-
-        //  verif pseudo length,
-        if (pseudo.length >= 13 || pseudo.length <= 3) {
-            return res.status(400).json({ 'error': 'wrong pseudo! (must be length 4 - 12 characters)' });
+        if (!verifInputUsers.PSEUDO_REGEX(pseudo)) {
+            return res.status(400).json({ 'error': 'wrong pseudo! (must be length 15 characters max, no dot and no special characters)' });
         }
         // Verif email by regex
-        if (!EMAIL_REGEX.test(email)) {
+        if (!verifInputUsers.EMAIL_REGEX(email)) {
             return res.status(400).json({ 'error': 'email is not valid!' });
         }
         // Verif password by regex
-        if (!PASSWORD_REGEX.test(password)) {
+        if (!verifInputUsers.PASSWORD_REGEX(password)) {
             return res.status(400).json({ 'error': 'password invalid (must contain at least: 8 characters, 1 lowercase letter, 1 uppercase, 1 number and 1 special character as only   !#@$?/%µ²*,&~èçà+_¤-  )!' });
         }
 
