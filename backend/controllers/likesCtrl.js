@@ -47,7 +47,7 @@ module.exports = {
                         return res.status(500).json({ 'error': 'unable to verify user!' });
                     })
                 } else {
-                    res.status(404).json({ 'error': ' message already liked!' });
+                    res.status(404).json({ 'error': ' unable to liked, message not exist!' });
                 }
             },
             (messageFound, userFound, done) => {
@@ -154,7 +154,7 @@ module.exports = {
                         return res.status(500).json({ 'error': 'unable to verify user!' });
                     })
                 } else {
-                    res.status(404).json({ 'error': ' message already liked!' });
+                    res.status(404).json({ 'error': ' unable to disliked, message not exist!' });
                 }
             },
             (messageFound, userFound, done) => {
