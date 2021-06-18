@@ -5,7 +5,6 @@ const path = require('path');
 
 const userRoutes = require('./routes/userRoute');
 const messageRoutes = require('./routes/messageRoute');
-// const likesRoute = require('./routes/likesRoute');
 
 // Création de l'application Express sécurisée par elmet
 const app = express();
